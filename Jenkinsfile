@@ -2,7 +2,7 @@ pipeline {
     agent any
  
     environment {
-        FLY_API_TOKEN=credentials('RAUL_JENKINS_TEST')
+        FLY_API_TOKEN=credentials('FLY_API_TOKEN_TEST')
     }
  
     tools {
@@ -18,7 +18,7 @@ pipeline {
         stage('Install Fly.io') {
             steps {
                 echo 'Installing Fly.io...'
-                withCredentials([string(credentialsId: 'RAUL_JENKINS', variable: 'RAUL_JENKINS')]) {
+                withCredentials([string(credentialsId: 'FLY_API_TOKEN', variable: 'FLY_API_TOKEN')]) {
                     sh '''
                         # Instalar flyctl si no está ya disponible
                         curl -L https://fly.io/install.sh | sh
@@ -46,7 +46,7 @@ pipeline {
         }
         stage('Pintar credencial'){
             steps{
-                echo 'Hola esta es mi credencial: $RAUL_JENKINS'
+                echo 'Hola esta es mi credencial: $FLY_API_TOKEN'
             }
         }
  
