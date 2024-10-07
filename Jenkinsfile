@@ -66,7 +66,7 @@ pipeline {
     agent any
  
     environment {
-        // Es posible que quieras definir FLY_API_TOKEN aquí si no usas withCredentials
+        FLY_API_TOKEN=credentials('FLY_API_TOKEN')
     }
  
     tools {

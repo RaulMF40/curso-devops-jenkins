@@ -1,39 +1,23 @@
-# syntax = docker/dockerfile:1
+# Usar la imagen base de Node.js
+FROM node:22.9.0-alpine
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=20.18.0
-FROM node:${NODE_VERSION}-slim as base
+# Crear un directorio de trabajo
+WORKDIR /opt/
 
-LABEL fly_launch_runtime="Node.js"
+# Copiar el package.json al contenedor
+COPY package.json .
 
-# Node.js app lives here
-WORKDIR /app
-
-# Set production environment
-ENV NODE_ENV="production"
-
-
-# Throw-away build stage to reduce size of final image
-FROM base as build
-
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
-
-# Install node modules
-COPY package.json ./
+# Instalar dependencias
 RUN npm install
 
-# Copy application code
+# Copiar el resto del código al contenedor
 COPY . .
 
+# Ejecutar los tests antes de exponer el puerto
+RUN npm test -- --passWithNoTests
 
-# Final stage for app image
-FROM base
-
-# Copy built application
-COPY --from=build /app /app
-
-# Start the server by default, this can be overwritten at runtime
+# Exponer el puerto que la API utilizará
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+
+# Comando por defecto para ejecutar la API
+CMD ["npm", "run", "start"]
