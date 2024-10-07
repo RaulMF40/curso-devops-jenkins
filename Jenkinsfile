@@ -74,14 +74,14 @@ pipeline {
     }
  
     triggers {
-        githubPush() // Activa el job en un push
+        githubPush() 
     }
     
     stages {
         stage('Install Fly.io') {
             steps {
                 echo 'Installing Fly.io...'
-                withCredentials([string(credentialsId: 'FLY_API_TOKEN', variable: 'FLY_API_TOKEN')]) { // Esto debería funcionar correctamente
+                withCredentials([string(credentialsId: 'FLY_API_TOKEN', variable: 'FLY_API_TOKEN')]) { 
                     sh '''
                         # Instalar flyctl si no está ya disponible
                         curl -L https://fly.io/install.sh | sh
@@ -98,21 +98,21 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 echo 'Installing...'
-                sh 'npm install' // Instala las dependencias
+                sh 'npm install' 
             }
         }
         
         stage('Run tests') {
             steps {
                 echo 'Running tests...'
-                sh 'npm run test' // Ejecuta los tests
+                sh 'npm run test' 
             }
         }
         
         stage('Deploy to Fly.io') {
             steps {
                 echo 'Deploying the project to Fly.io...'
-                sh '/var/jenkins_home/.fly/bin/flyctl deploy --app curso-devops-jenkins-bitter-wind-1309 --remote-only' // Asegúrate de que el nombre de la app sea correcto
+                sh '/var/jenkins_home/.fly/bin/flyctl deploy --app curso-devops-jenkins-bitter-wind-1309 --remote-only' 
             }
         }
     }

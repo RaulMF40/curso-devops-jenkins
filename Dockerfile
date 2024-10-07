@@ -1,23 +1,24 @@
-# Usar la imagen base de Node.js
+# Selecciona la base de mi contenedor
+# FROM ubuntu:10.04
+# PESO DE 2GB
+#FROM node:22.9.0
+# PESO de 250MB
 FROM node:22.9.0-alpine
+ 
+#Ejecutar comandos de la terminal
+#RUN apt-get install <package-name>
 
-# Crear un directorio de trabajo
-WORKDIR /opt/
+COPY package.json / opt/
 
-# Copiar el package.json al contenedor
-COPY package.json .
+# en caso de tener nuestro codigo en typescript
+RUN npm run build
 
-# Instalar dependencias
+RUN npm test 
+
 RUN npm install
 
-# Copiar el resto del código al contenedor
-COPY . .
+WORKDIR /opt/
 
-# Ejecutar los tests antes de exponer el puerto
-RUN npm test -- --passWithNoTests
-
-# Exponer el puerto que la API utilizará
 EXPOSE 3000
 
-# Comando por defecto para ejecutar la API
 CMD ["npm", "run", "start"]
