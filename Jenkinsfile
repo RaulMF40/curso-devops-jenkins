@@ -66,7 +66,7 @@ pipeline {
     agent any
  
     environment {
-        FLY_API_TOKEN = credentials('FLY_API_TOKEN') // Carga la credencial directamente aquí
+        // Es posible que quieras definir FLY_API_TOKEN aquí si no usas withCredentials
     }
  
     tools {
@@ -74,44 +74,41 @@ pipeline {
     }
  
     triggers {
-        githubPush() // Esto activará el job en un push
+        githubPush() // Activa el job en un push
     }
     
     stages {
         stage('Install Fly.io') {
             steps {
                 echo 'Installing Fly.io...'
-                sh '''
-                    # Instalar flyctl si no está ya disponible
-                    curl -L https://fly.io/install.sh | sh
-                    export FLYCTL_INSTALL="/var/jenkins_home/.fly"
-                    export PATH="$FLYCTL_INSTALL/bin:$PATH"
-                    # Autenticarse con Fly.io
-                    fly auth token $FLY_API_TOKEN // Usa la variable de entorno
-                '''
+                withCredentials([string(credentialsId: 'FLY_API_TOKEN', variable: 'FLY_API_TOKEN')]) { // Esto debería funcionar correctamente
+                    sh '''
+                        # Instalar flyctl si no está ya disponible
+                        curl -L https://fly.io/install.sh | sh
+                        export FLYCTL_INSTALL="/var/jenkins_home/.fly"
+                        export PATH="$FLYCTL_INSTALL/bin:$PATH"
+                        # Autenticarse con Fly.io
+                        fly auth token $FLY_API_TOKEN
+                        fly version // Verifica que flyctl esté instalado y accesible
+                    '''
+                }
             }
         }
         
         stage('Install dependencies') {
             steps {
                 echo 'Installing...'
-                sh 'npm install' // Instala las dependencias de tu proyecto
+                sh 'npm install' // Instala las dependencias
             }
         }
         
         stage('Run tests') {
             steps {
                 echo 'Running tests...'
-                sh 'npm run test' // Ejecuta tus tests
+                sh 'npm run test' // Ejecuta los tests
             }
         }
         
-        stage('Pintar credencial') {
-            steps {
-                echo "Hola, esta es mi credencial: $FLY_API_TOKEN" // **No imprimas el token en producción**
-            }
-        }
- 
         stage('Deploy to Fly.io') {
             steps {
                 echo 'Deploying the project to Fly.io...'
