@@ -140,16 +140,11 @@ pipeline {
             steps {
                 echo 'Installing Fly.io...'
                 script {
-                    // Instalar flyctl si no está ya disponible
                     sh 'curl -L https://fly.io/install.sh | sh'
-                    // Establecer el path para flyctl
                     sh 'export FLYCTL_INSTALL="/var/jenkins_home/.fly"'
                     sh 'export PATH="$FLYCTL_INSTALL/bin:$PATH"'
-                    // Autenticarse con Fly.io
-                    withCredentials([string(credentialsId: 'FLY_API_TOKEN', variable: 'FLY_API_TOKEN')]) { 
-                        sh 'fly auth token $FLY_API_TOKEN'
-                    }
-                    // Verificar que flyctl esté instalado y accesible
+                    // Autenticarse con Fly.io usando el token de credenciales
+                    sh "echo '${FLY_API_TOKEN}' | fly auth token"
                     sh 'fly version' 
                 }
             }
@@ -177,3 +172,4 @@ pipeline {
         }
     }
 }
+
