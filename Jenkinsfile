@@ -1,3 +1,4 @@
+/*
 pipeline {
     agent any
  
@@ -59,3 +60,63 @@ pipeline {
     }
 }
 
+*/
+
+pipeline {
+    agent any
+ 
+    environment {
+        FLY_API_TOKEN = credentials('FLY_API_TOKEN') // Carga la credencial directamente aquí
+    }
+ 
+    tools {
+        nodejs "nodejs-18"
+    }
+ 
+    triggers {
+        githubPush() // Esto activará el job en un push
+    }
+    
+    stages {
+        stage('Install Fly.io') {
+            steps {
+                echo 'Installing Fly.io...'
+                sh '''
+                    # Instalar flyctl si no está ya disponible
+                    curl -L https://fly.io/install.sh | sh
+                    export FLYCTL_INSTALL="/var/jenkins_home/.fly"
+                    export PATH="$FLYCTL_INSTALL/bin:$PATH"
+                    # Autenticarse con Fly.io
+                    fly auth token $FLY_API_TOKEN // Usa la variable de entorno
+                '''
+            }
+        }
+        
+        stage('Install dependencies') {
+            steps {
+                echo 'Installing...'
+                sh 'npm install' // Instala las dependencias de tu proyecto
+            }
+        }
+        
+        stage('Run tests') {
+            steps {
+                echo 'Running tests...'
+                sh 'npm run test' // Ejecuta tus tests
+            }
+        }
+        
+        stage('Pintar credencial') {
+            steps {
+                echo "Hola, esta es mi credencial: $FLY_API_TOKEN" // **No imprimas el token en producción**
+            }
+        }
+ 
+        stage('Deploy to Fly.io') {
+            steps {
+                echo 'Deploying the project to Fly.io...'
+                sh '/var/jenkins_home/.fly/bin/flyctl deploy --app curso-devops-jenkins-bitter-wind-1309 --remote-only' // Asegúrate de que el nombre de la app sea correcto
+            }
+        }
+    }
+}
