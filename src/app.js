@@ -5,7 +5,7 @@ app.use(express.json())
 
 // Ruta básica
 app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Hello World from Jenkinsfile!' })
+  res.status(200).json({ message: 'Hello World desde Jenkinsfile!' })
 })
 
 // Ruta de ejemplo para pruebas
