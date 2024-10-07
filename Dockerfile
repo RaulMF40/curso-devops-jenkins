@@ -7,17 +7,19 @@ FROM node:22.9.0-alpine
  
 #Ejecutar comandos de la terminal
 #RUN apt-get install <package-name>
+WORKDIR /opt/
 
-COPY package.json / opt/
+COPY package.json ./
 
-# en caso de tener nuestro codigo en typescript
-RUN npm run build
-
-RUN npm test 
+# en caso de tener nuestro codigo en typescript RUN npm run build
 
 RUN npm install
 
-WORKDIR /opt/
+
+
+COPY . .
+
+RUN npm test -- --passWithNoTests
 
 EXPOSE 3000
 
