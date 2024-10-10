@@ -9,13 +9,9 @@ FROM node:22.9.0-alpine
 #RUN apt-get install <package-name>
 WORKDIR /opt/
 
-COPY package.json ./
-
-# en caso de tener nuestro codigo en typescript RUN npm run build
+COPY package.json /opt/
 
 RUN npm install
-
-
 
 COPY . .
 

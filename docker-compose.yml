@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  api:
+    image: raulmoya/my-api:1.0.0
+    ports:
+      - '3001:3000'
+    volumes:
+      - .:/opt
+  http-server:
+    image: nginx:latest
+    ports:
+      - '8080:80'
