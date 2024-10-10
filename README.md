@@ -1,18 +1,10 @@
-# curso-devops-jenkins
+# curso-devops-docker basico
 
 Ejercicio 4. día 1/10/24.
+primer ejercicio: necesitamos descargarnos un contenedor de NGINX, leyendo la documentación debo de ser capaz de levantarlo y ponerlo en funcionamiento. Como se que es un servidor HTTP necesito que desde mi navegador, al acceder a la url más puerto del contenedor se me muestre la pagina inicial de NGINX. (tambien puedo encontrar la documentación en docker hub)
 
-Pasos
+Una vez configurado todo. necesito que el puerto inicial de entrada, cambie y sea ese numero más uno, es decir, que si fuera el 1000, en este punto debe ser el 1001
 
-1. Tener un repo nuevo que se llame curso-devops-jenkins Si ya teneis repo para jenkins no hace falta crear uno nuevo.
-2. Nos clonamos en local este repo
-3. Pegamos las carpetas src y tests y los archivos jest.config.js, package.json y README.md del proyecto base.
-4. Creamos nuestro Jenkinsfile
-   4.1) Necesitamos tener 2 stages. Uno para hacer instalación de dependencias y otro para ejecutar los tests
-   4.2) Recordad poner una tool de nodejs que se llama 'nodejs-18'
-   4.3) También debemos poner los triggers necesarios...
-5. Configurar nuestro repositorio para que ejecute un webhook cada vez que haya un evento nuevo. Recordad el formato de la url... /github.......
-6. Una vez configurado el webhook nos vamos a jenkins
-7. En jenkins creamos nuestro job con el template de pipeline
-8. Recordad que en las opciones que nos da a continuación en 'Build triggers' debemos seleccionar Github SCM...
-9. En el apartado de 'Pipeline' debemos introducir la URL del repositorio y MUY IMPORTANTE el escribir la rama donde vamos a hacer los cambios
+SOLUCION, YO LO HE HECHO CON EL PORT 8000:80,, Y LUEGO DE 8001:80
+
+me he quedado en 1.58.32 en docker compose basico
