@@ -40,7 +40,7 @@ pipeline {
         stage('Run test'){
             steps{
                 echo 'Running test'
-                sh "sudo npm run test"
+                sh "npm run test"
             }
         }
         stage('Pintar credencial'){
