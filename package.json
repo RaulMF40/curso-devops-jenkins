@@ -1,7 +1,7 @@
 {
   "name": "curso-devops-jenkins",
   "version": "1.0.0",
-  "description": "Ejercicio 4. día 1/10/24 junto con el docker dia 7/10/24.",
+  "description": "Ejercicio Jenkins-flyiodeploy CI.",
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",

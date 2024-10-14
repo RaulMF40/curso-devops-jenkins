@@ -5,7 +5,7 @@ app.use(express.json())
 
 // Ruta básica
 app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Hello World gral!' })
+  res.status(200).json({ message: 'Hello World desde Jenkins y Flyio!' })
 })
 
 // Ruta de ejemplo para pruebas
