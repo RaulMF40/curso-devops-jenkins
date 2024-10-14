@@ -52,7 +52,7 @@ pipeline {
         stage('Deploy to Fly.io') {
             steps {
                 echo 'Deploying the project to Fly.io...'
-                sh '/var/jenkins_home/.fly/bin/flyctl deploy --app curso-devops-jenkins-correccion --remote-only'
+                sh '/var/jenkins_home/.fly/bin/flyctl deploy --app curso-devops-jenkins --remote-only'
             }
         }
     }
