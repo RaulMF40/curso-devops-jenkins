@@ -40,8 +40,7 @@ pipeline {
         stage('Run test'){
             steps{
                 echo 'Running test'
-                sh 'npm install -g jest'
-                sh "jest"
+                sh "npm run test"
             }
         }
         stage('Pintar credencial'){
