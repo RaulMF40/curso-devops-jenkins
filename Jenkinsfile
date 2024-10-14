@@ -37,16 +37,20 @@ pipeline {
         stage('Run tests') {
             steps {
                 echo 'Running tests...'
-                sh 'npm run test' 
+                sh 'npm test' 
             }
         }
         
         stage('Deploy to Fly.io') {
             steps {
                 echo 'Deploying the project to Fly.io...'
-                sh '/var/jenkins_home/.fly/bin/flyctl deploy --app curso-devops-jenkins-crimson-wave-1177 --remote-only' 
+                sh 'curl -L https://fly.io/install.sh | sh'
+                sh 'export FLYCTL_INSTALL="/var/jenkins_home/.fly"'
+                sh 'export PATH="$FLYCTL_INSTALL/bin:$PATH"'
+                sh "echo '${FLY_API_TOKEN}' | fly auth token"
+                sh 'fly version' 
+                sh 'flyctl deploy --app curso-devops-jenkins-crimson-wave-1177 --remote-only' 
             }
         }
     }
 }
-
